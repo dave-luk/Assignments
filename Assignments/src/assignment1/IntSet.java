@@ -60,10 +60,9 @@ public class IntSet
 
 	public void remove(int value)
 	{
-		if(size == 0 || ((head.getElement().intValue() != value) && size == 1) || ((head.getElement().intValue() != value) && (tail.getElement().intValue() != value) && size == 2) )
-		{
-			return;
-		}
+		if (size == 0 || ((head.getElement().intValue() != value) && size == 1)
+		        || ((head.getElement().intValue() != value) && (tail.getElement().intValue() != value)
+		                && size == 2)) { return; }
 		Node<Integer> cursor = head;
 		Node<Integer> prev;
 

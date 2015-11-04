@@ -1,24 +1,23 @@
-package assignment1;
+package stack;
 
-public class Node<E>
-{
-
-	private Node<E>	nextNode;
-	private E		element;
-
-	public Node(E element, Node<E> nextNode)
+public class Node<E> {
+	
+	private Node<E> nextNode;
+	private E element;
+	
+	public Node (E element, Node<E> nextNode)
 	{
 		super();
 		this.setNextNode(nextNode);
 		this.element = element;
-	}
-
+	}	
+	
 	public Node(E element)
 	{
 		this.element = element;
 	}
 
-	public Node<E> getNextNode()
+	public Node<E> getNextNode() 
 	{
 		return nextNode;
 	}
@@ -28,12 +27,12 @@ public class Node<E>
 		this.nextNode = nextNode;
 	}
 
-	public E getElement()
+	public E getElement() 
 	{
 		return element;
 	}
 
-	public void setElement(E element)
+	public void setElement(E element) 
 	{
 		this.element = element;
 	}
@@ -42,7 +41,7 @@ public class Node<E>
 	{
 		return !(nextNode == null);
 	}
-
+	
 	@Override
 	public String toString()
 	{
