@@ -2,14 +2,14 @@ package assignment2;
 
 public class ExprConverter
 {
-	private String		expression;
-	private StringStack	operator;
-	private StringStack	operand;
+	private String			expression;
+	private Stack<String>	operator;
+	private Stack<String>	operand;
 
 	public ExprConverter()
 	{
-		operator = new StringStack();
-		operand = new StringStack();
+		operator = new Stack<String>();
+		operand = new Stack<String>();
 	}
 
 	public void setExpression(String exp)
