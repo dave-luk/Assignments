@@ -1,6 +1,6 @@
-package list;
+package reference.list;
 
-import node.Node;
+import reference.node.Node;
 
 public class LinkedList<E> implements List<E>
 {
@@ -18,7 +18,7 @@ public class LinkedList<E> implements List<E>
 	{
 		Node<E> newNode = new Node<E>(element, null);
 
-		// check if the list is empty
+		// check if the reference.list is empty
 		if (head != null)
 		{
 			tail.setNextNode(newNode);
@@ -36,7 +36,7 @@ public class LinkedList<E> implements List<E>
 	{
 		if (index < size())
 		{
-			// create the new node
+			// create the new reference.node
 			Node<E> newNode = new Node<E>(element, null);
 
 			// check if we want to add it in the beginning

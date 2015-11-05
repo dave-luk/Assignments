@@ -1,4 +1,4 @@
-package list;
+package reference.list;
 
 public class ArrayList<E> implements List<E>
 {
@@ -34,7 +34,7 @@ public class ArrayList<E> implements List<E>
 	}
 
 	/**
-	 * Appends value at end of list
+	 * Appends value at end of reference.list
 	 */
 	@Override
 	public void add(E element)
@@ -75,12 +75,12 @@ public class ArrayList<E> implements List<E>
 		}
 		else
 		{
-			throw new RuntimeException("Out of the list boundary.");
+			throw new RuntimeException("Out of the reference.list boundary.");
 		}
 	}
 
 	/**
-	 * Removes all elements of the list
+	 * Removes all elements of the reference.list
 	 */
 	public void clear()
 	{
@@ -88,7 +88,7 @@ public class ArrayList<E> implements List<E>
 	}
 
 	/**
-	 * Returns first index where given value is found in list (-1 if not found)
+	 * Returns first index where given value is found in reference.list (-1 if not found)
 	 */
 	@Override
 	public int indexOf(E element)
@@ -113,7 +113,7 @@ public class ArrayList<E> implements List<E>
 		}
 		else
 		{
-			throw new RuntimeException("Out of the list boundary.");
+			throw new RuntimeException("Out of the reference.list boundary.");
 		}
 	}
 
@@ -136,7 +136,7 @@ public class ArrayList<E> implements List<E>
 		}
 		else
 		{
-			throw new RuntimeException("Out of the list boundary.");
+			throw new RuntimeException("Out of the reference.list boundary.");
 		}
 	}
 
@@ -152,12 +152,12 @@ public class ArrayList<E> implements List<E>
 		}
 		else
 		{
-			throw new RuntimeException("Out of the list boundary.");
+			throw new RuntimeException("Out of the reference.list boundary.");
 		}
 	}
 
 	/**
-	 * Returns the number of elements in list
+	 * Returns the number of elements in reference.list
 	 */
 	@Override
 	public int size()
@@ -166,7 +166,7 @@ public class ArrayList<E> implements List<E>
 	}
 
 	/**
-	 * Returns a string representation of the list, such as "[3, 42, -7, 15]"
+	 * Returns a string representation of the reference.list, such as "[3, 42, -7, 15]"
 	 */
 	@Override
 	public String toString()

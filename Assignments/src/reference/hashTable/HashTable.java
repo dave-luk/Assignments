@@ -1,4 +1,4 @@
-package hashTable;
+package reference.hashTable;
 
 public class HashTable<K, E>
 {

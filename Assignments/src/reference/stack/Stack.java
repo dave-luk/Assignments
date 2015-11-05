@@ -1,6 +1,6 @@
-package stack;
+package reference.stack;
 
-import node.Node;
+import reference.node.Node;
 
 public class Stack<E>
 {

@@ -1,6 +1,6 @@
-package queue;
+package reference.queue;
 
-import node.Node;
+import reference.node.Node;
 
 public class Queue<E>
 {

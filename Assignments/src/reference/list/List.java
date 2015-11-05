@@ -1,4 +1,4 @@
-package list;
+package reference.list;
 
 public interface List<E>
 {

@@ -1,4 +1,4 @@
-package node;
+package reference.node;
 
 public class Node<E> {
 	

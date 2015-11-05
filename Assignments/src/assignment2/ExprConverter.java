@@ -1,6 +1,6 @@
 package assignment2;
 
-import stack.Stack;
+import reference.stack.Stack;
 
 public class ExprConverter
 {
