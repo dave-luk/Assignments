@@ -1,31 +1,31 @@
-package stack;
+package queue;
 
 import node.Node;
 
-public class Stack<E>
+public class Queue<E>
 {
-	private Node<E>	top;
+	private Node<E>	head;
 	private int		size;
 
-	public Stack()
+	public Queue()
 	{
-		top = null;
+		head = null;
 		size = 0;
 	}
 
 	public E peek()
 	{
-		if (top == null) throw new RuntimeException("ERROR: Empty Stack!");
-		else return top.getElement();
+		if (head == null) throw new RuntimeException("ERROR: Empty Queue!");
+		else return head.getElement();
 	}
 
 	public E pop()
 	{
-		if (top == null) throw new RuntimeException("ERROR: Empty Stack!");
+		if (head == null) throw new RuntimeException("ERROR: Empty Queue!");
 		else
 		{
-			E element = top.getElement();
-			top = top.getNextNode();
+			E element = head.getElement();
+			head = head.getNextNode();
 			size--;
 			return element;
 		}
@@ -33,8 +33,13 @@ public class Stack<E>
 
 	public void push(E element)
 	{
-		Node<E> newNode = new Node<E>(element, top);
-		top = newNode;
+		Node<E> cursor = head;
+		
+		while(cursor.hasNext())
+		{
+			cursor = cursor.getNextNode();
+		}
+		cursor.setNextNode(new Node<E>(element));
 		size++;
 	}
 
@@ -52,18 +57,18 @@ public class Stack<E>
 	public String toString()
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("[<TOP>: ");
-		Node<E> cursor = top;
+		sb.append("[<BTM>: ");
+		Node<E> cursor = head;
 		while (cursor != null)
 		{
 			sb.append(cursor.getElement());
 			if (cursor.getNextNode() != null)
 			{
-				sb.append(" -> ");
+				sb.append(" <- ");
 			}
 			cursor = cursor.getNextNode();
 		}
-		sb.append(" :<BTM>]");
+		sb.append(" :<TOP>]");
 		return sb.toString();
 	}
 }
