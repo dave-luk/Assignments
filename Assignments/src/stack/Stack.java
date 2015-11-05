@@ -1,19 +1,67 @@
 package stack;
 
-public interface Stack<E>
+public class Stack<E>
 {
-	/** Get the top item of this stack without removing the item */
-	public E peek();
+	private Node<E>	top;
+	private int		size;
 
-	/** Get the top item, removing it from this stack */
-	public E pop();
+	public Stack()
+	{
+		top = null;
+		size = 0;
+	}
 
-	/** Push a new item onto this stack. The new item may be the null reference. */
-	public void push(E element);
+	public E peek()
+	{
+		if (top == null) throw new RuntimeException("ERROR: Empty Stack!");
+		else return top.getElement();
+	}
 
-	/** Determine whether this stack is empty. */
-	public boolean isEmpty();
+	public E pop()
+	{
+		if (top == null) throw new RuntimeException("ERROR: Empty Stack!");
+		else
+		{
+			E element = top.getElement();
+			top = top.getNextNode();
+			size--;
+			return element;
+		}
+	}
 
-	/** Return the number of items in this stack. */
-	public int size();
+	public void push(E element)
+	{
+		Node<E> newNode = new Node<E>(element, top);
+		top = newNode;
+		size++;
+	}
+
+	public boolean isEmpty()
+	{
+		return (size == 0);
+	}
+
+	public int size()
+	{
+		return size;
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("[<TOP>: ");
+		Node<E> cursor = top;
+		while (cursor != null)
+		{
+			sb.append(cursor.getElement());
+			if (cursor.getNextNode() != null)
+			{
+				sb.append(" -> ");
+			}
+			cursor = cursor.getNextNode();
+		}
+		sb.append(" :<BTM>]");
+		return sb.toString();
+	}
 }

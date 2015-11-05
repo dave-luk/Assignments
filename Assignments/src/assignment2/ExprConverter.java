@@ -1,5 +1,7 @@
 package assignment2;
 
+import stack.Stack;
+
 public class ExprConverter
 {
 	private String			expression;

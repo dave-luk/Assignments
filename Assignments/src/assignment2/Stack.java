@@ -1,5 +1,7 @@
 package assignment2;
 
+import assignment2.Node;
+
 public class Stack<E>
 {
 	private Node<E>	top;
