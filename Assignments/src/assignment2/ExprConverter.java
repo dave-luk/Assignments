@@ -1,17 +1,18 @@
 package assignment2;
 
+import assignment2.Operation.Type;
 import reference.stack.Stack;
 
 public class ExprConverter
 {
-	private String			expression;
-	private Stack<String>	operator;
-	private Stack<String>	operand;
+	private String				expression;
+	private Stack<Operation>	operator;
+	private Stack<Operation>	operand;
 
 	public ExprConverter()
 	{
-		operator = new Stack<String>();
-		operand = new Stack<String>();
+		operator = new Stack<Operation>();
+		operand = new Stack<Operation>();
 	}
 
 	public void setExpression(String exp)
@@ -19,91 +20,183 @@ public class ExprConverter
 		this.expression = exp;
 	}
 
-	public String convert(ExpressionStyle e)
+	public String convert(ExpressionStyle from, ExpressionStyle to)
 	{
-		for (int i = 0; i < expression.length(); i++)
+		if (from == ExpressionStyle.INFIX)
 		{
-			switch (expression.charAt(i))
+			for (int i = 0; i < expression.length(); i++)
 			{
-				case '+':
-				case '-':
-					while (!operator.isEmpty() && !operator.peek().equals("("))
-						exprBuilding(Character.toString(expression.charAt(i)), e);
-					operator.push(Character.toString(expression.charAt(i)));
-					break;
-				case '*':
-				case '/':
-					while (!operator.isEmpty() && (operator.peek().equals("/") || operator.peek().equals("*")))
-						exprBuilding(Character.toString(expression.charAt(i)), e);
-					operator.push(Character.toString(expression.charAt(i)));
-					break;
-				case '(':
-					operator.push(Character.toString(expression.charAt(i)));
-					break;
-				case ')':
-					exprBuilding(Character.toString(expression.charAt(i)), e);
-					break;
-				case ' ':
-					break;
-				default:
-					operand.push(Character.toString(expression.charAt(i)));
-					break;
+				String str = Character.toString(expression.charAt(i));
+				switch (expression.charAt(i))
+				{
+					case '+':
+					case '-':
+						while (!operator.isEmpty() && !operator.peek().equals("("))
+							exprBuilding(str, from, to);
+						operator.push(new Operation(str, Operation.Type.OPERATOR, i));
+						break;
+					case '*':
+					case '/':
+						while (!operator.isEmpty() && (operator.peek().equals("/") || operator.peek().equals("*")))
+							exprBuilding(str, from, to);
+						operator.push(new Operation(str, Operation.Type.OPERATOR, i));
+						break;
+					case '(':
+						operator.push(new Operation(str, Operation.Type.OPERATOR, i));
+						break;
+					case ')':
+						exprBuilding(str, from, to);
+						break;
+					case ' ':
+						break;
+					default:
+						operand.push(new Operation(str, Operation.Type.OPERAND, i));
+						break;
+				}
+			}
+
+			exprBuilding(null, from, to);
+			return operand.pop().toType(to);
+		}
+		else
+		{
+			if (from == ExpressionStyle.PREFIX)
+			{
+				for (int i = 0; i < expression.length(); i++)
+				{
+					String str = Character.toString(expression.charAt(i));
+					switch (expression.charAt(i))
+					{
+
+						case '+':
+						case '-':
+						case '*':
+						case '/':
+							operator.push(new Operation(str, Operation.Type.OPERATOR, i));
+							break;
+						case ' ':
+							break;
+						default:
+							if (!operand.isEmpty()
+							        && isAdjacent(new Operation(str, Type.OPERAND, i), operand.peek(), from))
+							{
+								operand.push(new Operation(str, Operation.Type.OPERAND, i));
+								exprBuilding(str, from, to);
+							}
+							else operand.push(new Operation(str, Operation.Type.OPERAND, i));
+							break;
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < expression.length(); i++)
+				{
+					String str = Character.toString(expression.charAt(i));
+					switch (expression.charAt(i))
+					{
+						case '+':
+						case '-':
+						case '*':
+						case '/':
+							if (!operand.isEmpty() && isAdjacent(getPrev(operand), operand.peek(), from))
+							{
+								operator.push(new Operation(str, Operation.Type.OPERATOR, i));
+								exprBuilding(str, from, to);
+							}
+							else operator.push(new Operation(str, Operation.Type.OPERATOR, i));
+							break;
+						case ' ':
+							break;
+						default:
+							operand.push(new Operation(str, Operation.Type.OPERAND, i));
+							break;
+
+					}
+				}
+
 			}
 		}
-
-		exprBuilding(null, e);
-		return operand.pop();
+		exprBuilding(null, from, to);
+		return operand.pop().toType(to);
 	}
 
-	private void exprBuilding(String curr, ExpressionStyle e)
+	private void exprBuilding(String curr, ExpressionStyle from, ExpressionStyle to)
 	{
 		boolean popped = false;
-		while (!operator.isEmpty())
+		boolean cont = false;
+		do
 		{
-			if (operator.peek().equals("("))
+			if (!operator.isEmpty())
 			{
-				if (curr != null)
+				cont = false;
+				if (operator.peek().equals("("))
 				{
-					if (curr.equals(")"))
+					if (curr != null)
 					{
-						operator.pop();
-						popped = true;
+						if (curr.equals(")"))
+						{
+							operator.pop();
+							popped = true;
+						}
+						break;
 					}
-					break;
+					else throw new RuntimeException("<ERROR>: Missing Parentheses! \")\"");
 				}
-				else throw new RuntimeException("<ERROR>: Missing Parentheses! \")\"");
-			}
 
-			Operation exp = new Operation();
-			try
-			{
-				exp.setOperator(operator.pop());
-				exp.setRightOperand(operand.pop());
-				exp.setLeftOperand(operand.pop());
-
-				switch (e)
+				Operation exp = new Operation(to, Type.EXPRESSION);
+				try
 				{
-					case PREFIX:
-						operand.push(exp.toPrefix());
-						break;
-					case POSTFIX:
-						operand.push(exp.toPostfix());
-						break;
-					case INFIX:
-						operand.push(exp.toString());
-					default:
-						break;
+					exp.setOperator(operator.peek());
+					exp.setRightOperand(operand.pop());
+					exp.setLeftOperand(operand.pop());
+					exp.setStyle(to);
+					exp.setIndex(operator.pop().getIndex());
+					operand.push(exp);
+				}
+				catch (RuntimeException Re)
+				{
+					throw new RuntimeException("<ERROR>: Missing Operand(s)!");
 				}
 
-			}
-			catch (RuntimeException Re)
-			{
-				throw new RuntimeException("<ERROR>: Missing Operand(s)!");
+				// check if now has 2 operands and a operator again
+				try
+				{
+					Operation top = operand.pop();
+					if (!operand.isEmpty())
+					{
+						Operation next = operand.peek();
+						if (!operator.isEmpty() && isAdjacent(top, next, from))
+						{
+							cont = true;
+						}
+					}
+					operand.push(top);
+				}
+				catch (RuntimeException e)
+				{
+
+				}
 			}
 		}
+		while (cont == true);
 
 		if (operator.isEmpty() && !popped && curr != null
 		        && curr.equals(")")) { throw new RuntimeException("<ERROR>: Unmatched Parentheses! \"(\""); }
+	}
+
+	private boolean isAdjacent(Operation top, Operation next, ExpressionStyle orig)
+	{
+		if (orig == ExpressionStyle.PREFIX) return (next.getIndex() + next.length() == top.getIndex());
+		else return (next.getIndex() - next.length() == top.getIndex());
+	}
+
+	private Operation getPrev(Stack<Operation> target)
+	{
+		Operation top = target.pop();
+		Operation next = target.peek();
+		target.push(top);
+		return next;
 	}
 
 	@Override

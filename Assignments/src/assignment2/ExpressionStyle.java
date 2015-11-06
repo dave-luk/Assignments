@@ -6,4 +6,8 @@ public enum ExpressionStyle
 	PREFIX(),
 	INFIX();
 	
+	public String toString()
+	{
+		return this.name();
+	}
 }
