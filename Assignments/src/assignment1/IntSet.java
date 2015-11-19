@@ -1,5 +1,7 @@
 package assignment1;
 
+import reference.node.Node;
+
 public class IntSet
 {
 

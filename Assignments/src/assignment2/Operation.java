@@ -167,6 +167,15 @@ public class Operation
 	public String toString()
 	{
 		String rtn = "";
+		switch (currType)
+		{
+			case OPERATOR:
+				return operator;
+			case OPERAND:
+				return leftOperand;
+			case EXPRESSION:
+				return leftOperand + operator + rightOperand;
+		}
 		if (hasleftOperand())
 		{
 			rtn += leftOperand;

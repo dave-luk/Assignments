@@ -1,4 +1,4 @@
-package reference.hashTable;
+package assignment3;
 
 public class HashEntry<K, E> implements Hashable<K>
 {
