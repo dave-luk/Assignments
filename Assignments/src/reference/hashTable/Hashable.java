@@ -1,8 +1,10 @@
 package reference.hashTable;
 
-public interface Hashable<E>
+public abstract class Hashable<K>
 {
-	public int hashCode();
+	public abstract  int hashCode();
 	
-	public boolean equals(Object o);
+	public abstract boolean auth(K key);
+	
+	public abstract boolean equals(Object o);
 }

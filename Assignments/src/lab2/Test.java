@@ -27,5 +27,18 @@ public class Test
 	{
 		this.s = s;
 	}
+	
+	public static long fib(int n)
+	{
+		if(n < 3) return 1;
+		else return fib(n-2) + fib(n-1);
+	}
+	
+	public static void main(String[] args)
+	{
+		System.out.println(fib(50));
+		int[][] test = new int[30][10];
+		test[9][10] = 10;
+	}
 }
 

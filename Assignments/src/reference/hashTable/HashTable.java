@@ -30,7 +30,7 @@ public class HashTable<K, E>
 		if (cursor != null)
 		{
 			HashEntry<K, E> prev = null;
-			while (cursor != null && !cursor.getKey().equals(key))
+			while (cursor != null && !cursor.auth(key))
 			{
 				prev = cursor;
 				cursor = cursor.getNext();
@@ -55,7 +55,7 @@ public class HashTable<K, E>
 	{
 		int indexToGet = hash(key);
 		HashEntry<K, E> cursor = dataArray[indexToGet];
-		while (cursor != null && !cursor.getKey().equals(key))
+		while (cursor != null && !cursor.auth(key))
 		{
 			cursor = cursor.getNext();
 		}
@@ -73,7 +73,7 @@ public class HashTable<K, E>
 		int indexToRemove = hash(key);
 		HashEntry<K, E> cursor = dataArray[indexToRemove];
 		HashEntry<K, E> prev = null;
-		while (cursor != null && !cursor.getKey().equals(key))
+		while (cursor != null && !cursor.auth(key))
 		{
 			prev = cursor;
 			cursor = cursor.getNext();

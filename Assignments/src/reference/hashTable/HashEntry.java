@@ -1,6 +1,6 @@
 package reference.hashTable;
 
-public class HashEntry<K, E> implements Hashable<K>
+public class HashEntry<K, E>  extends Hashable<K>
 {
 
 	private K	key;
@@ -42,5 +42,22 @@ public class HashEntry<K, E> implements Hashable<K>
 	public void setNext(HashEntry<K, E> next)
 	{
 		this.next = next;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return element.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		return ((Object)this).equals(o);
+	}
+
+	public boolean auth(K key)
+	{
+		return this.key.equals(key);
 	}
 }

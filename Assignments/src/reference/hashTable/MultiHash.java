@@ -1,6 +1,6 @@
 package reference.hashTable;
 
-public class MultiHash<K> extends HashTable<K, Object>
+public class MultiHash<K> extends HashTable<HashKey<K>, Object>
 {
 	private int tier;
 
@@ -11,29 +11,36 @@ public class MultiHash<K> extends HashTable<K, Object>
 	}
 
 	@Override
-	protected int hash(K key)
+	protected int hash(HashKey<K> key)
 	{
-
-		return  (Math.abs(key.hashCode())+ tier) % dataArray.length;
+		switch (tier)
+		{
+			case 0:
+				return (key.hashCode() % dataArray.length);
+			case 1:
+				return (key.hashCode2() % dataArray.length);
+			default:
+				return (key.hashCode3() % dataArray.length);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void put(K key, Object o)
+	public void put(HashKey<K> key, Object o)
 	{
-		HashEntry<K, Object> entry = new HashEntry<K, Object>(key, o);
+		HashEntry<HashKey<K>, Object> entry = new HashEntry<HashKey<K>, Object>(key, o);
 		int indexToPut = hash(key);
 
-		HashEntry<K, Object> cursor = dataArray[indexToPut];
-		if (cursor != null)        // if its not empty
+		HashEntry<HashKey<K>, Object> cursor = dataArray[indexToPut];
+		if (cursor != null)          // if its not empty
 		{
-			if (!cursor.getKey().equals(key))        // if its not the same key
+			if (!cursor.auth(key))          // if its not the same key
 			{
-				HashEntry<K, Object> childTbl = dataArray[indexToPut];
-				if (cursor.getKey() != null)        // if its not a table
+				HashEntry<HashKey<K>, Object> childTbl = dataArray[indexToPut];
+				if (cursor.getKey() != null)          // if its not a table
 				{
-					HashEntry<K, Object> temp = cursor;
-					childTbl = dataArray[indexToPut] = new HashEntry<K, Object>(null, new MultiHash<K>(tier + 1));
+					HashEntry<HashKey<K>, Object> temp = cursor;
+					childTbl = dataArray[indexToPut] = new HashEntry<HashKey<K>, Object>(null, new MultiHash<K>(tier + 1));
 					size--;
 					((MultiHash<K>) childTbl.getElement()).put(temp.getKey(), temp.getElement());
 				}
@@ -58,17 +65,17 @@ public class MultiHash<K> extends HashTable<K, Object>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object get(K key)
+	public Object get(HashKey<K> key)
 	{
 		int indexToGet = hash(key);
-		HashEntry<K, Object> cursor = dataArray[indexToGet];
-		if (cursor == null)     // if empty
+		HashEntry<HashKey<K>, Object> cursor = dataArray[indexToGet];
+		if (cursor == null)       // if empty
 		{
 			return null;
 		}
 		else // if not empty
 		{
-			if (cursor.getKey() == null)     // if a table
+			if (cursor.getKey() == null)       // if a table
 			{
 				return ((MultiHash<K>) cursor.getElement()).get(key);
 			}
@@ -81,13 +88,13 @@ public class MultiHash<K> extends HashTable<K, Object>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void remove(K key)
+	public void remove(HashKey<K> key)
 	{
 		int indexToRemove = hash(key);
-		HashEntry<K, Object> cursor = dataArray[indexToRemove];
-		if (cursor != null)    // if not empty
+		HashEntry<HashKey<K>, Object> cursor = dataArray[indexToRemove];
+		if (cursor != null)      // if not empty
 		{
-			if (cursor.getKey() != null)    // if not a table
+			if (cursor.getKey() != null)      // if not a table
 			{
 				cursor = null;
 			}
@@ -103,12 +110,12 @@ public class MultiHash<K> extends HashTable<K, Object>
 	public String toString()
 	{
 		String res = "";
-		for (HashEntry<K, Object> entry : dataArray)
+		for (HashEntry<HashKey<K>, Object> entry : dataArray)
 		{
-			if (entry != null)   // if it exists
+			if (entry != null)     // if it exists
 			{
-				HashEntry<K, Object> cursor = entry;
-				if (cursor.getKey() != null)    // if not a table
+				HashEntry<HashKey<K>, Object> cursor = entry;
+				if (cursor.getKey() != null)      // if not a table
 				{
 					while (cursor != null) // when there are more element
 					{
