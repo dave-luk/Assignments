@@ -4,8 +4,8 @@ import reference.node.Node;
 
 public class LinkedList<E> implements List<E>
 {
-	private Node<E>	head;
-	private Node<E>	tail;
+	public Node<E>	head;
+	public Node<E>	tail;
 	private int		size;
 
 	public LinkedList()
